@@ -42,7 +42,16 @@ class ExpenseAdmin(admin.ModelAdmin):
         "store",
         "category",
         "comments",
-        "event",
         "account",
         "value",
+        "this_installment",
+        "number_of_installments",
+        "event",
+    )
+    list_filter = (
+        "date",
+        "account",
+        "category__category_type",
+        "category",
+        "installments",
     )
