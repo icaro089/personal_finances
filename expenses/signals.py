@@ -5,6 +5,14 @@ from django.dispatch import receiver
 from expenses.models import Expense
 
 
+@receiver(signals.pre_save, sender=Expense)
+def correct_expense_value(sender, instance, **kwargs):
+    if instance.category.category_type == "Expense" and instance.value > 0:
+        instance.value = instance.value * (-1)
+    if instance.category.category_type == "Income" and instance.value < 0:
+        instance.value = instance.value * (-1)
+
+
 @receiver(signals.post_save, sender=Expense)
 def create_other_installments(sender, instance, created, **kwargs):
     """When the field installment field is True, it automatically creates the other expenses for each of the ramaining installments"""
@@ -15,7 +23,13 @@ def create_other_installments(sender, instance, created, **kwargs):
     first_installment = instance.this_installment
     last_installment = instance.number_of_installments
 
-    if first_installment == last_installment:
+    if first_installment is None or first_installment <= 0:
+        return
+
+    if last_installment is None or last_installment <= 0:
+        return
+
+    if first_installment >= last_installment:
         return
 
     new_expense = Expense.objects.get(pk=instance.pk)

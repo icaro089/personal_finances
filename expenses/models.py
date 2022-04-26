@@ -1,4 +1,6 @@
 from django.db import models
+from django.forms import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
@@ -60,3 +62,35 @@ class Expense(models.Model):
     installments = models.BooleanField(default=False)
     this_installment = models.IntegerField(default=None, null=True, blank=True)
     number_of_installments = models.IntegerField(default=None, null=True, blank=True)
+
+    def clean(self):
+        if self.installments:
+            if not self.this_installment:
+                raise ValidationError(
+                    _("Please, inform witch installment is this"),
+                    code="this_installment_none",
+                )
+            if self.this_installment <= 0:
+                raise ValidationError(
+                    _("Field This Installment must be greater than zero"),
+                    code="this_installment_number_error",
+                )
+
+            if not self.number_of_installments:
+                raise ValidationError(
+                    _("Please, inform the total number of installments"),
+                    code="number_of_installments_none",
+                )
+
+            if self.number_of_installments <= 0:
+                raise ValidationError(
+                    _("Field Number Of Installments must be greater than zero"),
+                    code="number_of_installments_number_error",
+                )
+            if self.number_of_installments <= self.this_installment:
+                raise ValidationError(
+                    _(
+                        "Number Of Installments must be equal or greater than This Installment"
+                    ),
+                    code="this_installment_greater_than_number_of_installments",
+                )
