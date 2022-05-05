@@ -47,6 +47,7 @@ class ExpenseAdmin(admin.ModelAdmin):
         "this_installment",
         "number_of_installments",
         "event",
+        "checked",
     )
     list_filter = (
         "date",
@@ -55,3 +56,4 @@ class ExpenseAdmin(admin.ModelAdmin):
         "category",
         "installments",
     )
+    list_editable = ("checked",)

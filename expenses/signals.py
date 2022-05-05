@@ -36,4 +36,5 @@ def create_other_installments(sender, instance, created, **kwargs):
     new_expense.pk = None
     new_expense.date += relativedelta(months=1)
     new_expense.this_installment += 1
+    new_expense.checked = False
     new_expense.save()

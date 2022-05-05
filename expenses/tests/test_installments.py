@@ -16,6 +16,7 @@ def expense_with_installments(request):
         installments=True,
         this_installment=request.param.this,
         number_of_installments=request.param.total,
+        checked=True,
     )
     return expense
 
@@ -60,3 +61,17 @@ def test_last_installment_date(expense):
     assert last_installment.date == first_date + relativedelta(
         months=(qnt_installments)
     )
+
+
+@pytest.mark.django_db(transaction=True)
+def test_checked_installment(expense):
+    """Tests if only the first installment is checked"""
+    # Get the last created expense
+    last_installment = Expense.objects.last()
+    # Checks if the last installment is equal to the total installments
+    if expense.pk != last_installment.pk:
+        assert expense.checked is True
+        assert last_installment.checked is False
+    else:
+        assert expense.checked is True
+        assert last_installment.checked is True

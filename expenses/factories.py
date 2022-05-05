@@ -52,3 +52,4 @@ class ExpenseFactory(factory.django.DjangoModelFactory):
     installments = False
     this_installment = None
     number_of_installments = None
+    checked = False

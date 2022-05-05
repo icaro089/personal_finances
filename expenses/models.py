@@ -62,6 +62,7 @@ class Expense(models.Model):
     installments = models.BooleanField(default=False)
     this_installment = models.IntegerField(default=None, null=True, blank=True)
     number_of_installments = models.IntegerField(default=None, null=True, blank=True)
+    checked = models.BooleanField(default=False)
 
     def clean(self):
         if self.installments:
@@ -87,7 +88,7 @@ class Expense(models.Model):
                     _("Field Number Of Installments must be greater than zero"),
                     code="number_of_installments_number_error",
                 )
-            if self.number_of_installments <= self.this_installment:
+            if self.number_of_installments < self.this_installment:
                 raise ValidationError(
                     _(
                         "Number Of Installments must be equal or greater than This Installment"
