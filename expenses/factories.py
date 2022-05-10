@@ -4,7 +4,14 @@ import decimal
 import factory
 import factory.fuzzy
 
-from expenses.models import Account, Category, Event, Expense, Store
+from expenses.models import (
+    Account,
+    Category,
+    Event,
+    Expense,
+    Store,
+    creditCardBill,
+)
 
 
 class AccountFactory(factory.django.DjangoModelFactory):
@@ -12,7 +19,7 @@ class AccountFactory(factory.django.DjangoModelFactory):
         model = Account
 
     name = factory.Sequence(lambda index: f"Account {index}")
-    account_type = "Credit Card"
+    account_type = "Cash"
     opening_balance = factory.Sequence(lambda index: decimal.Decimal(10.5 * index))
 
 
@@ -22,6 +29,13 @@ class CategoryFactory(factory.django.DjangoModelFactory):
 
     name = factory.Sequence(lambda index: f"Category {index}")
     category_type = "Expense"
+
+
+class creditCardBillFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = creditCardBill
+
+    date = factory.fuzzy.FuzzyDate(datetime.date(2022, 4, 7))
 
 
 class EventFactory(factory.django.DjangoModelFactory):
@@ -53,3 +67,4 @@ class ExpenseFactory(factory.django.DjangoModelFactory):
     this_installment = None
     number_of_installments = None
     checked = False
+    credit_card_bill = None
