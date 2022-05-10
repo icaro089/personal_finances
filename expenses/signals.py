@@ -13,6 +13,11 @@ def correct_expense_value(sender, instance, **kwargs):
         instance.value = instance.value * (-1)
 
 
+@receiver(signals.pre_save, sender=Expense)
+def create_credit_card_bill(sender, instance, **kwargs):
+    return
+
+
 @receiver(signals.post_save, sender=Expense)
 def create_other_installments(sender, instance, created, **kwargs):
     """When the field installment field is True, it automatically creates the other expenses for each of the ramaining installments"""
