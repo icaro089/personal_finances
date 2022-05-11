@@ -13,8 +13,8 @@ from expenses.models import creditCardBill
 
 @pytest.fixture()
 def credit_card_expense():
-    credit_card_expense = ExpenseFactory()
-    credit_card_expense.account.account_type = "Credit Card"
+    credit_card_account = AccountFactory(account_type="Credit Card")
+    credit_card_expense = ExpenseFactory(account=credit_card_account)
     return credit_card_expense
 
 

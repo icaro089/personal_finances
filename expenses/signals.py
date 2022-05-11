@@ -18,7 +18,10 @@ def correct_expense_value(sender, instance, **kwargs):
 @receiver(signals.pre_save, sender=Expense)
 def create_credit_card_bill(sender, instance, **kwargs):
     """When a credit card is saved without the credit card bill, completes this field automatically"""
-    if instance.credit_card_bill is not None:
+    if (
+        instance.account.account_type != "Credit Card"
+        or instance.credit_card_bill is not None
+    ):
         return
 
     bill_month = instance.date + relativedelta(months=1)
