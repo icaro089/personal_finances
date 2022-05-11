@@ -51,6 +51,14 @@ class Store(models.Model):
         return self.name
 
 
+class creditCardBill(models.Model):
+    date = models.DateField()
+
+    def __str__(self):
+        str_date = self.date.strftime("%d/%m/%Y")
+        return str_date
+
+
 class Expense(models.Model):
     date = models.DateField()
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
@@ -63,6 +71,9 @@ class Expense(models.Model):
     this_installment = models.IntegerField(default=None, null=True, blank=True)
     number_of_installments = models.IntegerField(default=None, null=True, blank=True)
     checked = models.BooleanField(default=False)
+    credit_card_bill = models.ForeignKey(
+        creditCardBill, on_delete=models.SET_NULL, null=True, blank=True, default=None
+    )
 
     def clean(self):
         if self.installments:

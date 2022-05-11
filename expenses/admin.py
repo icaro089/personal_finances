@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Account, Category, Event, Expense, Store
+from .models import Account, Category, Event, Expense, Store, creditCardBill
 
 # Register your models here.
 
@@ -23,6 +23,11 @@ class CategoryAdmin(admin.ModelAdmin):
         "category_type",
         "name",
     )
+
+
+@admin.register(creditCardBill)
+class creditCardBillAdmin(admin.ModelAdmin):
+    ordering = ("-date",)
 
 
 @admin.register(Store)
@@ -48,6 +53,7 @@ class ExpenseAdmin(admin.ModelAdmin):
         "number_of_installments",
         "event",
         "checked",
+        "credit_card_bill",
     )
     list_filter = (
         "date",
@@ -55,5 +61,6 @@ class ExpenseAdmin(admin.ModelAdmin):
         "category__category_type",
         "category",
         "installments",
+        "credit_card_bill",
     )
     list_editable = ("checked",)
