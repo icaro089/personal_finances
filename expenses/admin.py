@@ -63,4 +63,4 @@ class ExpenseAdmin(admin.ModelAdmin):
         "installments",
         "credit_card_bill",
     )
-    list_editable = ("checked", "credit_card_bill")
+    list_editable = ("checked",)

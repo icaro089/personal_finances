@@ -106,9 +106,3 @@ class Expense(models.Model):
                     ),
                     code="this_installment_greater_than_number_of_installments",
                 )
-
-        if self.account.account_type == "Credit Card" and self.credit_card_bill is None:
-            raise ValidationError(
-                _("This expense must have a credit card bill assigned"),
-                code="credit_card_expense_without_bill_selected",
-            )
